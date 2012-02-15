@@ -9,4 +9,12 @@
         android:layout_height="wrap_content"
         android:text="@string/hello" />
 
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:hint="kjflaksjdf;a" android:inputType="text">
+
+        <requestFocus />
+    </EditText>
+
 </LinearLayout>
