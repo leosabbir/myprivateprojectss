@@ -4,11 +4,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+
+import com.hogwart.grewordlist.R;
 import com.hogwart.grewordlist.adapter.WordListAdapter;
 
 public class WordListAdapterImpl implements WordListAdapter {
@@ -20,28 +25,22 @@ public class WordListAdapterImpl implements WordListAdapter {
 	List<String> wordList;
 
 	@Override
-	public List<String> getWordList(int list) {
-		this.loadWordList(list);
+	public List<String> getWordList(Context context, int list) {
+		this.loadWordList(context, list);
 		return this.wordList;
 	}
 	
 	private void loadWordListFile(int list){
 		//this.wordListFile = new File(FILE_NAME_PREFIX + list + FILE_NAME_POSTFIX);
-		this.wordListFile = new File("wordlist_1.list");
+		this.wordListFile = new File("wordlist.list");
 	}
 	
-	private void loadWordList(int list){
+	private void loadWordList(Context context, int list){
 		this.wordList = new ArrayList<String>();
 		this.loadWordListFile(list);
 		
-		FileInputStream wordListFileStream=null;
-		try {
-			wordListFileStream = new FileInputStream(this.wordListFile);
-			
-		} catch (FileNotFoundException e) {
-			System.out.println("The specified word list file was not found");
-			return;
-		}
+		InputStream wordListFileStream = context.getResources().openRawResource(R.raw.wordlist_1);
+				
 		BufferedReader fileReader = new BufferedReader( new InputStreamReader(wordListFileStream));
 		
 		try{
@@ -63,12 +62,4 @@ public class WordListAdapterImpl implements WordListAdapter {
 		
 	}
 	
-	public static void main(String[] args) {
-		WordListAdapterImpl test = new WordListAdapterImpl();
-		
-		for (String string : test.getWordList(1)) {
-			System.out.println(string);
-		}
-	}
-
 }
