@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, WordListActivity!</string>
+    <string name="hello">GRE WORD LIST</string>
     <string name="app_name">WordList</string>
+    <string name="words">Words...</string>
+    <string name="next">Next</string>
 
 </resources>
