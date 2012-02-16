@@ -5,7 +5,9 @@ import java.util.List;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.hogwart.grewordlist.adapter.WordListAdapter;
 import com.hogwart.grewordlist.adapter.impl.WordListAdapterImpl;
@@ -21,17 +23,33 @@ public class WordListActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
         
         loader = new WordsLoaderImpl(adapter);
     	wordList = loader.getWordList(this, 1);
+    	
+    	final List<String> temporaryList = wordList;
         
-        View view = findViewById(R.id.editText1);
-        EditText txt = (EditText) view;
-       
+        View view = findViewById(R.id.textView1);
+        final TextView txt = (TextView) view;
+        
         if( !wordList.isEmpty() ){
-        	txt.setText(wordList.get(0));
+        	txt.setText(temporaryList.get(0));
+        	temporaryList.remove(0);
         }
         
-        setContentView(R.layout.main);
+        view = findViewById(R.id.button1);
+        Button nextBtn = (Button) view;
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+            	int i = (int) ( Math.random() * temporaryList.size());
+            	txt.setText(temporaryList.get(i));
+            	temporaryList.remove(i);                
+            }
+
+        });
+       
+        
+        
     }
 }
