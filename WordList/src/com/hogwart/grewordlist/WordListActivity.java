@@ -3,31 +3,26 @@ package com.hogwart.grewordlist;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.hogwart.grewordlist.adapter.WordListAdapter;
-import com.hogwart.grewordlist.adapter.impl.WordListAdapterImpl;
-import com.hogwart.grewordlist.api.WordsLoader;
-import com.hogwart.grewordlist.api.impl.WordsLoaderImpl;
+import com.hogwart.grewordlist.constants.WordListConstants;
 
 public class WordListActivity extends Activity {
     
-	private final WordListAdapter adapter = new WordListAdapterImpl();
-	private WordsLoader loader;
 	List<String> wordList;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        loader = new WordsLoaderImpl(adapter);
-    	wordList = loader.getWordList(this, 1);
     	
+        int list = getIntent().getIntExtra(WordListConstants.LIST_INDEX	, 1);
+        boolean lastListIndicator = getIntent().getBooleanExtra(WordListConstants.LAST_LIST_INDICATOR, true);
+        wordList = ClientWordListLoader.getWordList(list, lastListIndicator);
     	final List<String> temporaryList = wordList;
         
         View view = findViewById(R.id.textView1);
@@ -42,9 +37,15 @@ public class WordListActivity extends Activity {
         Button nextBtn = (Button) view;
         nextBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-            	int i = (int) ( Math.random() * temporaryList.size());
-            	txt.setText(temporaryList.get(i));
-            	temporaryList.remove(i);                
+            	int size = temporaryList.size();
+            	
+            	if(size == 0){
+            		startActivity(new Intent(view.getContext(), HomeActivity.class));
+            	}else{
+            		int i = (int) ( Math.random() * size);
+            		txt.setText(temporaryList.get(i));
+            		temporaryList.remove(i);
+            	}
             }
 
         });
