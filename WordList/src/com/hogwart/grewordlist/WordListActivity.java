@@ -1,5 +1,6 @@
 package com.hogwart.grewordlist;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -23,7 +24,8 @@ public class WordListActivity extends Activity {
         int list = getIntent().getIntExtra(WordListConstants.LIST_INDEX	, 1);
         boolean lastListIndicator = getIntent().getBooleanExtra(WordListConstants.LAST_LIST_INDICATOR, true);
         wordList = ClientWordListLoader.getWordList(list, lastListIndicator);
-    	final List<String> temporaryList = wordList;
+    	final List<String> temporaryList = new ArrayList<String>();
+    	temporaryList.addAll(wordList);
         
         View view = findViewById(R.id.textView1);
         final TextView txt = (TextView) view;

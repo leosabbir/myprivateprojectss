@@ -15,13 +15,15 @@ public class ClientWordListLoader {
 	private static final WordListAdapter adapter = new WordListAdapterImpl();
 	private static WordsLoader loader = new  WordsLoaderImpl(adapter);
 	private static List<String> allWordList = new ArrayList<String>();
+	private static Integer noOfLists;
 	
 	public static int getNumberOfWordList(Context context, int list){
-		allWordList = loader.getWordList(context, list);
+		if( noOfLists == null){
+			allWordList = loader.getWordList(context, list);
+			noOfLists = allWordList.size() % LIST_SIZE == 0 ? allWordList.size() / LIST_SIZE : allWordList.size() / LIST_SIZE + 1;
+		}
 		
-		int i = allWordList.size() % LIST_SIZE == 0 ? allWordList.size() / LIST_SIZE : allWordList.size() / LIST_SIZE + 1;
-		
-		return i;
+		return noOfLists;
 	}
 	
 	public static List<String> getWordList(int list, boolean lastListIndicator){
