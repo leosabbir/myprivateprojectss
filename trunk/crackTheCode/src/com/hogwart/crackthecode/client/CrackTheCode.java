@@ -1,16 +1,22 @@
 package com.hogwart.crackthecode.client;
 
+import java.util.List;
+
 import org.vaadin.gwtgraphics.client.DrawingArea;
+import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.hogwart.crackthecode.client.events.SubmitEvent;
 import com.hogwart.crackthecode.client.handler.SubmitHandler;
 import com.hogwart.crackthecode.client.view.components.Row;
+import com.hogwart.crackthecode.shared.api.ColorCodeService;
+import com.hogwart.crackthecode.shared.api.ColorCodeServiceAsync;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -27,8 +33,7 @@ public class CrackTheCode implements EntryPoint, SubmitHandler {
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting service.
 	 */
-	private final GreetingServiceAsync greetingService = GWT
-			.create(GreetingService.class);
+	private final ColorCodeServiceAsync colorCodeService = GWT.create(ColorCodeService.class);
 	
 	private DrawingArea canvas;
 	private Row row;
@@ -44,9 +49,25 @@ public class CrackTheCode implements EntryPoint, SubmitHandler {
 		row = new Row(x0, y0);
 		row.setSubmitHandler(this);
 		
-		canvas = new DrawingArea(400, 800);
+		Image image = new Image(0, 0, 400, 450, "canvasbackground.JPG");
 		
-		canvas.add(row);
+		canvas = new DrawingArea(400, 450);
+		canvas.setStyleName("maincanvas");
+		canvas.add(image);
+		
+		colorCodeService.createColorCode(new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				canvas.add(row);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});		
 		
 		RootPanel.get().add(canvas);
 		
@@ -56,10 +77,26 @@ public class CrackTheCode implements EntryPoint, SubmitHandler {
 	public void onSubmit(SubmitEvent event) {
 
 		y0 += 30;
-		row = new Row(x0, y0);
-		row.setSubmitHandler(this);
 		
-		canvas.add(row);
+		final SubmitHandler handler = this;
+		
+		colorCodeService.matchColorCode(event.getColorCode(), new AsyncCallback<List<Integer>>() {
+			
+			@Override
+			public void onSuccess(List<Integer> result) {
+				row.showResultText(result.get(0) + " " + result.get(1));
+				row = new Row(x0, y0);
+				row.setSubmitHandler(handler);
+				canvas.add(row);
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 }
