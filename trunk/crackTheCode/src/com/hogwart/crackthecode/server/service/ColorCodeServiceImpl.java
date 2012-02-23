@@ -21,7 +21,7 @@ public class ColorCodeServiceImpl extends RemoteServiceServlet implements ColorC
 		List<Integer> codes = new ArrayList<Integer>();
 		
 		while( codes.size() < 5 ){
-			Integer code = (int) (Math.random() * 8);
+			Integer code = (int) (Math.random() * 8) + 1;
 			
 			if( !codes.contains(code)){
 				codes.add(code);
