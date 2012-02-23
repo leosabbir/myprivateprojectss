@@ -2,12 +2,14 @@ package com.hogwart.crackthecode.client.view.components;
 
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.shape.Circle;
+import org.vaadin.gwtgraphics.client.shape.Text;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.hogwart.crackthecode.client.events.SubmitEvent;
 import com.hogwart.crackthecode.client.handler.ColorSelectionHandler;
 import com.hogwart.crackthecode.client.handler.SubmitHandler;
+import com.hogwart.crackthecode.shared.ColorCode;
 
 public class Row extends Group implements ColorSelectionHandler {
 	
@@ -19,6 +21,7 @@ public class Row extends Group implements ColorSelectionHandler {
 	
 	Circle select1, select2, select3, select4, select5;
 	Button submitBtn;
+	Text submitResultTxt;
 	SelectClickHandler selectClickHandler; 
 	
 	private ColorSelectorPopUp colorSelectionPanel;
@@ -55,12 +58,14 @@ public class Row extends Group implements ColorSelectionHandler {
 		
 		submitBtn = new Button(getX(5), y0);
 		
+		submitResultTxt = new Text(getX(5) + 20, y0 + 10, "");
+		
 		submitBtn.addClickHandler( new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				remove(submitBtn);
-				fireEvent(new SubmitEvent());
+				fireEvent(new SubmitEvent( new ColorCode(select1.getFillColor(), select2.getFillColor(), select3.getFillColor(), select4.getFillColor(), select5.getFillColor())));
 				
 			}
 		});
@@ -93,6 +98,11 @@ public class Row extends Group implements ColorSelectionHandler {
 	
 	public void setSubmitHandler(SubmitHandler handler){
 		addHandler(handler, SubmitEvent.TYPE);
+	}
+	
+	public void showResultText(String result){
+		submitResultTxt.setText(result);
+		add(submitResultTxt);
 	}
  
 }
