@@ -22,8 +22,10 @@ public class ColorCodeTranslator {
 				return ColorConstants.ORANGE;
 			case 7:
 				return ColorConstants.BLUE_GREEN;
-			default:
+			case 8:
 				return ColorConstants.PURPLE;
+			default:
+				return ColorConstants.WHITE;
 		}
 		
 	}
@@ -59,7 +61,11 @@ public class ColorCodeTranslator {
 			return 7;
 		}
 		
-		return 8;
+		if( color.equals(ColorConstants.PURPLE)){
+			return 8;
+		}
+		
+		return 9;
 	}
 
 }
