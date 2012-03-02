@@ -2,11 +2,17 @@ package com.hogwart.crackthecode.server.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.zschech.gwt.comet.server.CometServletResponse;
+import net.zschech.gwt.comet.server.CometSession;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.hogwart.crackthecode.server.cometServlet.InstantMessagingServlet;
 import com.hogwart.crackthecode.shared.ColorCode;
 import com.hogwart.crackthecode.shared.api.ColorCodeService;
 
@@ -19,11 +25,7 @@ public class ColorCodeServiceImpl extends RemoteServiceServlet implements ColorC
 	
 	ColorCode colorCode;
 	
-	public ColorCodeServiceImpl() {
-		super();
-		
-		
-	}
+	private ConcurrentMap<String, CometSession> users = new ConcurrentHashMap<String, CometSession>();
 
 	@Override
 	public void createColorCode() {
@@ -40,6 +42,20 @@ public class ColorCodeServiceImpl extends RemoteServiceServlet implements ColorC
 		
 		colorCode = new ColorCode(codes.get(0), codes.get(1), codes.get(2), codes.get(3), codes.get(4));
 		getSession().setAttribute(getSession().getId(), colorCode);
+		
+		CometSession cometSession = InstantMessagingServlet.getCometSession(getSession(), true);
+		
+		if( !users.containsKey(getSession().getId()) ){
+			users.put(getSession().getId(), cometSession);
+		}
+		
+		System.out.println(getSession().getId());
+		
+		for (Map.Entry<String, CometSession> entry : users.entrySet()) {
+			if( entry.getValue().isValid() && !entry.getValue().equals(cometSession) ){
+				entry.getValue().enqueue(colorCode.toString());
+			}
+		}
 		
 	}
 
