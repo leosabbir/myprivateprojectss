@@ -11,10 +11,20 @@
     <servlet-class>com.hogwart.crackthecode.server.service.ColorCodeServiceImpl</servlet-class>
   </servlet>
   
-  <servlet-mapping>
-    <servlet-name>colorServlet</servlet-name>
-    <url-pattern>/crackthecode/match</url-pattern>
-  </servlet-mapping>
+ 	<servlet>
+		<servlet-name>chatComet</servlet-name>
+		<servlet-class>com.hogwart.crackthecode.server.cometServlet.InstantMessagingServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>chatComet</servlet-name>
+		<url-pattern>/crackthecode/comet</url-pattern>
+	</servlet-mapping>
+  
+ 	<servlet-mapping>
+    	<servlet-name>colorServlet</servlet-name>
+    	<url-pattern>/crackthecode/match</url-pattern>
+ 	</servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>

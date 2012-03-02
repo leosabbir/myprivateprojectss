@@ -4,6 +4,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import net.zschech.gwt.comet.server.CometSession;
 
 public class Sandbox {
 	public static void main(String[] args) {
@@ -17,6 +22,16 @@ public class Sandbox {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		ConcurrentMap<String, String> testMap = new ConcurrentHashMap<String, String>();
+		testMap.put("1", "one");
+		testMap.put("1", "two");
+		testMap.put("1", "three");
+		testMap.put("2", "one");
+		
+		for (Map.Entry<String, String> entry : testMap.entrySet()) {
+			System.out.println(entry.getKey() + " " + entry.getValue());
 		}
 		
 	}

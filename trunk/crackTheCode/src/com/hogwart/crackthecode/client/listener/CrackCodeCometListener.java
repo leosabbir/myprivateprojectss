@@ -3,6 +3,8 @@ package com.hogwart.crackthecode.client.listener;
 import java.io.Serializable;
 import java.util.List;
 
+import com.google.gwt.user.client.Window;
+
 import net.zschech.gwt.comet.client.CometListener;
 
 public class CrackCodeCometListener implements CometListener{
@@ -27,7 +29,7 @@ public class CrackCodeCometListener implements CometListener{
 
 	@Override
 	public void onHeartbeat() {
-		// TODO Auto-generated method stub
+		//Window.alert("Heart Beat received");
 		
 	}
 
@@ -39,7 +41,10 @@ public class CrackCodeCometListener implements CometListener{
 
 	@Override
 	public void onMessage(List<? extends Serializable> messages) {
-		// TODO Auto-generated method stub
+		for (Serializable serializable : messages) {
+			Window.alert(serializable.toString());
+		}
+		
 		
 	}
 

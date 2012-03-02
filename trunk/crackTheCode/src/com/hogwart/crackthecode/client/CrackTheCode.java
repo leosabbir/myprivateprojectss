@@ -2,6 +2,8 @@ package com.hogwart.crackthecode.client;
 
 import java.util.List;
 
+import net.zschech.gwt.comet.client.CometClient;
+
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.shape.Circle;
@@ -14,6 +16,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.hogwart.crackthecode.client.events.SubmitEvent;
 import com.hogwart.crackthecode.client.handler.SubmitHandler;
+import com.hogwart.crackthecode.client.listener.CrackCodeCometListener;
 import com.hogwart.crackthecode.client.view.components.Row;
 import com.hogwart.crackthecode.shared.api.ColorCodeService;
 import com.hogwart.crackthecode.shared.api.ColorCodeServiceAsync;
@@ -54,6 +57,9 @@ public class CrackTheCode implements EntryPoint, SubmitHandler {
 		canvas = new DrawingArea(400, 450);
 		canvas.setStyleName("maincanvas");
 		canvas.add(image);
+		
+		CometClient cometClient = new CometClient(GWT.getModuleBaseURL() + "comet", new CrackCodeCometListener());
+		cometClient.start();
 		
 		colorCodeService.createColorCode(new AsyncCallback<Void>() {
 			
