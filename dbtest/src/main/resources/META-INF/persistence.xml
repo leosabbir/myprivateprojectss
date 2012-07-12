@@ -1,0 +1,31 @@
+<!--suppress JpaDomInspection -->
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+             version="2.0">
+
+	<persistence-unit name="dbtest" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>com.hogwart.dbtest.server.entity.User</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+		<properties>
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.transaction.flush_before_completion"
+				value="true" />
+			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
+		</properties>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+	</persistence-unit>
+	
+	<persistence-unit name="test">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>com.hogwart.dbtest.server.entity.User</class>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+			<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+			<property name="username" value="sa" />
+			<property name="password" value="" />
+		</properties>
+	</persistence-unit>
+</persistence>
